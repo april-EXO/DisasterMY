@@ -16,28 +16,25 @@
 		}
 
 		#mapid {
-			position: absolute;
-			top: 8%;
-			left: 10%;
-			bottom: 25%;
-			right: 10%;
+			margin: auto;
+			width: 80%;
+			height: 70%;
+			top: 3%
 		}
 
-		#display {
-			text-align: center;
-			position: absolute;
-			top: 75%;
-			left: 10%;
-			bottom: 20%;
-			right: 10%;
-		}
 	</style>
 </head>
 
 <body>
+	<!-- MAP -->
+	<div id="mapid">
+		<div class="leaflet-control coordinate">
 
+		</div>
 
-	<div id="display">
+	</div>
+	<!-- MAP -->
+	<div class="d-grid gap-2 col-10	 p-5 mx-auto text-center" id="display">
 
 		<div class="card">
 			<div class="card-body p-3">
@@ -54,13 +51,13 @@
 					<li><select id="colors" onchange="setColors(); return;">
 							<option value="0">Black and White Values</option>
 							<option value="1">Original</option>
-							<option value="2" >Universal Blue</option>
+							<option value="2">Universal Blue</option>
 							<option value="3">TITAN</option>
 							<option value="4">The Weather Channel</option>
 							<option value="5">Meteored</option>
 							<option value="6">NEXRAD Level-III</option>
 							<option value="7">RAINBOW @ SELEX-SI</option>
-							<option value="8"selected="selected">Dark Sky</option>
+							<option value="8" selected="selected">Dark Sky</option>
 						</select></li>
 				</ul>
 				<!-- Button to back	 -->
@@ -76,8 +73,6 @@
 
 	</div>
 
-
-	<div id="mapid"></div>
 	<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
 	<script>
