@@ -277,20 +277,21 @@
 	});
 
 	var data = <?php echo JSON_encode($report); ?>;
-
-
+	var disasterMarker = L.layerGroup([]);
+	
 	for (var i = 0; i < data.length; i++) {
 		// Note how "L.marker()" runs only in the browser,
 		// well outside of the <?php ?> tags. PHP doesn't know, nor 
 		// it cares, about Leaflet.
 		L.marker([data[i].latitude, data[i].longitude], {
 			icon: disasterIcon
-		}).bindPopup("Disaster: " + data[i].type +"<br>Date: " + data[i].date+"<br>Time: " + data[i].time +"<br><a href=\"/view/" + data[i].id + "\"class=\"btn\">View Details</a>").addTo(map);
+		}).bindPopup("Disaster: " + data[i].type + "<br>Date: " + data[i].date + "<br>Time: " + data[i].time + "<br><a href=\"/view/" + data[i].id + "\"class=\"btn\">View Details</a>").addTo(disasterMarker);
 
 		// Accessing the properties of the data depends on the structure
 		// of the data. You might want to do stuff like
 		console.log(data);
 		// while remembering to use the developer tools (F12) in your browser.
+
 	}
 
 	//-------------------------------------------------------------------layers control
@@ -301,7 +302,7 @@
 
 
 	var overlayMaps = {
-		// "Disaster": disasterMarker,
+		"Disaster": disasterMarker,
 		"pointData": pointData,
 		"cluster": clusterMarker
 
@@ -331,7 +332,9 @@
 
 		var userLocationMarker = L.marker([lat, long])
 
-		var featureGroup = L.featureGroup([userLocationMarker]).bindPopup("Your location",{autoClose:false}).addTo(map).openPopup()
+		var featureGroup = L.featureGroup([userLocationMarker]).bindPopup("Your location", {
+			autoClose: false
+		}).addTo(map).openPopup()
 	}
 </script>
 @include('layouts.footer')
