@@ -10,8 +10,10 @@
 
 	<style>
 		#map {
-			width: 100%;
-			height: 100vh;
+			margin: auto;
+			width: 80%;
+			height: 70%;
+			top: 3%
 		}
 	</style>
 
@@ -23,6 +25,7 @@
 		<div class="leaflet-control coordinate">
 
 		</div>
+
 	</div>
 </body>
 
@@ -136,14 +139,12 @@
 	map.addLayer(clusterMarker);
 
 
-
-
-
 	//-------------------------------------------------------------------layers control
 	var baseMaps = {
 		"Dark Mode": Stadia_AlidadeSmoothDark,
 		"Light Mode": googleHybrid
 	};
+
 
 	var overlayMaps = {
 		"Flood": floodMarker,
@@ -157,10 +158,7 @@
 
 	map.removeLayer(floodMarker);
 
-	//-------------------------------------------------------------------leaflet events
-	map.on('click', function(e) {
-		document.getElementsByClassName('coordinate')[0].innerHTML = 'lat: ' + e.latlng.lat + 'lng: ' + e.latlng.lng;
-	})
+
 
 	//-------------------------------------------------------------------real time location
 	if (!navigator.geolocation) {
@@ -178,25 +176,7 @@
 		var userLocationMarker = L.marker([lat, long])
 
 		var featureGroup = L.featureGroup([userLocationMarker]).addTo(map)
-
-		// map.fitBounds(featureGroup.getBounds())
 	}
 
-
-	// // marker - moveable
-	// var myIcon = L.icon({
-	// 	iconUrl: 'images/pin/selectPin.png',
-	// 	iconSize: [60, 60],
-	// });
-
-	// var marker = L.marker([4.2105, 101.9758], {
-	// 	icon: myIcon,
-	// 	draggable: true,
-	//  title: "hover text for the marker",
-	//  opacity: 0.5,
-	// });
-
-	// var popup = marker.bindPopup('hiiiiii').openPopup();
-
-	// popup.addTo(map);
+	
 </script>

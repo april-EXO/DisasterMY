@@ -17,6 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/leaf', function () {
-    return view('leaf');
+Route::get('/rainmap', function () {
+    return view('rainmap');
 });

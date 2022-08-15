@@ -10,12 +10,26 @@
 		<!-- Collapsible wrapper -->
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<!-- Navbar brand -->
-			<a class="navbar-brand mt-2 mt-lg-0 fa-sm img-fluid" href="#">
+			<a class="navbar-brand mt-2 mt-lg-0 fa-sm img-fluid" href="/">
 				<img src="images/header/disasterLogo.png" height="20" alt="Logo" loading="lazy" /> DisasterMY
 			</a>
-
+			<!-- Left links -->
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item">
+					<a class="nav-link" href="/">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/rainmap">Rain Map</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Weather</a>
+				</li>
+			</ul>
+			<!-- Left links -->
 		</div>
 		<!-- Collapsible wrapper -->
+
+
 
 		<!-- Right elements -->
 		<div class="d-flex align-items-center">
@@ -27,7 +41,7 @@
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="#">
-					<img src="images/header/news.png" height="15" width="16" alt="Logo" loading="lazy" /> News</a>
+						<img src="images/header/news.png" height="15" width="16" alt="Logo" loading="lazy" /> News</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="#"></a>
