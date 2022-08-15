@@ -1,0 +1,39 @@
+// marker - flood
+	var floodIcon = L.icon({
+		iconUrl: 'images/pin/floodPin.png',
+		iconSize: [50, 50],
+	});
+	
+
+	var floodMarker = L.marker([4.2105, 101.9758], {
+		icon: myIcon
+	});
+
+	var popup = floodMarker.bindPopup('hiiiiii' + floodMarker.getLatLng()).openPopup();
+
+	popup.addTo(map);
+
+	console.log(floodMarker.toGeoJSON());
+
+	// -------------------------------------------------------------------geo json
+	// var pointData = L.geoJSON(pointJson).addTo(map)
+	// function onEachFeature(feature, layer) {
+	// 	layer.bindPopup(feature.geometry.coordinates[1]);
+	// }
+
+	// var pointData = L.geoJSON(pointJson, {
+	// 	pointToLayer: function(feature, latlng) {
+	// 		return L.marker(latlng, {
+	// 			icon: myIcon
+	// 		});
+	// 	},
+	// 	// onEachFeature: onEachFeature
+	// }).addTo(map);
+
+
+	// var pointData = L.geoJSON(pointJson, {
+	// 	pointToLayer: function(feature, latlng) {
+	// 		return clusterMarker.addLayer(circleMarker(latlng, geojsonMarkerOptions));
+	// 	},
+	// 	// onEachFeature: onEachFeature
+	// }).addTo(map);

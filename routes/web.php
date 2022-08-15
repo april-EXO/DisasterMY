@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,7 @@ Route::get('/', function () {
 Route::get('/rainmap', function () {
     return view('rainmap');
 });
+
+Route::post('/addReport', [ReportController::class, 'addReport']);
+
+Route::get('/', [ReportController::class, 'getData']);

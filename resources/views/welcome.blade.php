@@ -61,26 +61,27 @@
 
 					<!--form-->
 					<form action="addReport" method="POST">
+						@csrf
 						<div class="row mb-4">
 							<!-- event type -->
 							<div class="col">
 								<div class="form-outline">
 									<div class="form-floating">
-										<select class="form-select" id="event" aria-label="event">
+										<select class="form-select" id="type" aria-label="type" name="type" onChange="changetextbox();">
 											<option value="" selected disabled>Select</option>
 											<option value="flood"> Flood </option>
 											<option value="landslide"> Landslide </option>
 											<option value="forestfire"> Forest Fire </option>
-											<option value="others"> Others </option>
+											<option value="1"> Others </option>
 										</select>
-										<label for="event">Event Type</label>
+										<label for="type">Event Type</label>
 									</div>
 								</div>
 							</div>
 							<!-- other event type -->
 							<div class="col">
 								<div class="form-floating">
-									<input type="text" class="form-control" id="other">
+									<input type="text" class="form-control" id="other" name="type" disabled>
 									<label for="floatingInput">Other:</label>
 								</div>
 							</div>
@@ -90,7 +91,7 @@
 							<div class="col">
 								<div class="form-outline">
 									<div class="form-floating">
-										<input type="date" class="form-control" id="date">
+										<input type="date" class="form-control" id="date" name="date">
 										<label for="floatingInput">Date</label>
 									</div>
 								</div>
@@ -98,7 +99,7 @@
 							<!-- time -->
 							<div class="col">
 								<div class="form-floating">
-									<input type="time" class="form-control" id="time">
+									<input type="time" class="form-control" id="time" name="time">
 									<label for="floatingInput">Time</label>
 								</div>
 							</div>
@@ -137,7 +138,7 @@
 						<!-- location -->
 						<div class="form-outline mb-4">
 							<div class="form-floating">
-								<input type="text" class="form-control" id="other">
+								<input type="text" class="form-control" id="location" name="location">
 								<label for="floatingInput">Location:</label>
 							</div>
 						</div>
@@ -163,11 +164,22 @@
 		</div>
 	</div>
 
+
+
 </body>
 
 </html>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script>
+	function changetextbox() {
+		var selectedValue = type.options[type.selectedIndex].value;
+		var txtOther = document.getElementById("other");
+		txtOther.disabled = selectedValue == 1 ? false : true;
+		if (!txtOther.disabled) {
+			txtOther.focus();
+		}
+	}
+
 	function selectLocation() {
 		//-------------------------------------------------------------------leaflet events
 		map.on('click', function(e) {
@@ -229,36 +241,6 @@
 	L.Control.geocoder().addTo(map);
 
 
-	// marker - flood
-	var myIcon = L.icon({
-		iconUrl: 'images/pin/floodPin.png',
-		iconSize: [30, 30],
-	});
-
-	var floodMarker = L.marker([4.2105, 101.9758], {
-		icon: myIcon
-	});
-
-	var popup = floodMarker.bindPopup('hiiiiii' + floodMarker.getLatLng()).openPopup();
-
-	popup.addTo(map);
-
-	console.log(floodMarker.toGeoJSON());
-
-	// -------------------------------------------------------------------geo json
-	// var pointData = L.geoJSON(pointJson).addTo(map)
-	// function onEachFeature(feature, layer) {
-	// 	layer.bindPopup(feature.geometry.coordinates[1]);
-	// }
-
-	// var pointData = L.geoJSON(pointJson, {
-	// 	pointToLayer: function(feature, latlng) {
-	// 		return L.marker(latlng, {
-	// 			icon: myIcon
-	// 		});
-	// 	},
-	// 	// onEachFeature: onEachFeature
-	// }).addTo(map);
 
 	const geojsonMarkerOptions = {
 		radius: 8,
@@ -269,12 +251,6 @@
 		fillOpacity: 0.8
 	};
 
-	// var pointData = L.geoJSON(pointJson, {
-	// 	pointToLayer: function(feature, latlng) {
-	// 		return clusterMarker.addLayer(circleMarker(latlng, geojsonMarkerOptions));
-	// 	},
-	// 	// onEachFeature: onEachFeature
-	// }).addTo(map);
 
 	// -------------------------------------------------------------------marker clustering
 
@@ -292,6 +268,30 @@
 
 	map.addLayer(clusterMarker);
 
+	// -------------------------------------------------------------------marker clustering
+
+
+	var disasterIcon = L.icon({
+		iconUrl: 'images/pin/disasterPin.png',
+		iconSize: [50, 50],
+	});
+
+	var data = <?php echo JSON_encode($report); ?>;
+
+
+	for (var i = 0; i < data.length; i++) {
+		// Note how "L.marker()" runs only in the browser,
+		// well outside of the <?php ?> tags. PHP doesn't know, nor 
+		// it cares, about Leaflet.
+		L.marker([data[i].latitude, data[i].longitude], {
+			icon: disasterIcon
+		}).bindPopup("Disaster: " + data[i].type +"<br>Date: " + data[i].date+"<br>Time: " + data[i].time +"<br><a href=\"/view/" + data[i].id + "\"class=\"btn\">View Details</a>").addTo(map);
+
+		// Accessing the properties of the data depends on the structure
+		// of the data. You might want to do stuff like
+		console.log(data);
+		// while remembering to use the developer tools (F12) in your browser.
+	}
 
 	//-------------------------------------------------------------------layers control
 	var baseMaps = {
@@ -301,16 +301,18 @@
 
 
 	var overlayMaps = {
-		"Flood": floodMarker,
-		"pointData": pointData
+		// "Disaster": disasterMarker,
+		"pointData": pointData,
+		"cluster": clusterMarker
 
 	};
 
 	var layerControl = L.control.layers(baseMaps, overlayMaps, {
 		collapsed: false
 	}).addTo(map);
+	map.removeLayer(clusterMarker);
 
-	map.removeLayer(floodMarker);
+	// map.removeLayer(disasterMarker);
 
 
 
@@ -329,7 +331,7 @@
 
 		var userLocationMarker = L.marker([lat, long])
 
-		var featureGroup = L.featureGroup([userLocationMarker]).addTo(map)
+		var featureGroup = L.featureGroup([userLocationMarker]).bindPopup("Your location",{autoClose:false}).addTo(map).openPopup()
 	}
 </script>
 @include('layouts.footer')
