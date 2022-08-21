@@ -2,7 +2,7 @@
 
 <head>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-	@include('layouts.header')
+
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -14,8 +14,36 @@
 	<link rel="stylesheet" href="dist/MarkerCluster.default.css" />
 
 	<style>
+		.btn-report {
+			color: #FFFFFF;
+			background-color: #2f4a9c
+		}
+
+		.modal {
+			background-color: rgba(212, 197, 185, 0.2);
+		}
+
+		.modal-header{
+			background-color: rgba(117, 117, 117, 0.5);
+			color: white;
+		}
+
+		.modal-body {
+			background-color: rgba(173, 189, 255, 0.2);
+			
+		}
+
+		.modal-footer {
+			background-color: rgba(117, 117, 117, 0.5);
+			color: white;
+		}
+
+		.btn-submit {
+			background-color: #2f4a9c
+		}
+
 		#map {
-			margin: auto;
+			margin: 5%;
 			width: 80%;
 			height: 70%;
 			top: 3%
@@ -25,144 +53,172 @@
 		.leaflet-container {
 			cursor: crosshair;
 		}
-	</style>
 
+
+		#intro {
+			background-image: url("images/background.jpg");
+			height: 100vh;
+		}
+
+		/* Height for devices larger than 576px */
+		@media (min-width: 992px) {
+			#intro {
+				margin-top: -58.59px;
+			}
+		}
+
+		.navbar .nav-link {
+			color: #fff !important;
+		}
+	</style>
+	@include('layouts.header')
 
 </head>
 
 <body>
-	<!-- MAP -->
-	<div id="map">
-		<div class="leaflet-control coordinate">
+	<!-- Background image -->
+	<div class="bg-image shadow-2-strong" id="intro">
+		<div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+			<div class="d-flex justify-content-center align-items-center h-100">
+				<!-- MAP -->
+				<div id="map">
+					<div class="leaflet-control coordinate">
 
-		</div>
+					</div>
 
-	</div>
-	<!-- MAP -->
-
-	<!-- Button trigger modal -->
-	<div class="d-grid gap-2 col-3 p-5 mx-auto">
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-			Report Incident
-		</button>
-		<!-- Button to rain map	 -->
-		<a href="/rainmap" class="leaflet-control btn btn-secondary">View Rain Map</a>
-	</div>
-
-	<!-- Modal -->
-	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="staticBackdropLabel">Report Incident</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<div class="modal-body">
+				<!-- MAP -->
 
-					<!--form-->
-					<form action="addReport" method="POST">
-						@csrf
-						<div class="row mb-4">
-							<!-- event type -->
-							<div class="col">
-								<div class="form-outline">
-									<div class="form-floating">
-										<select class="form-select" id="type" aria-label="type" name="type" onChange="changetextbox();">
-											<option value="" selected disabled>Select</option>
-											<option value="flood"> Flood </option>
-											<option value="landslide"> Landslide </option>
-											<option value="forestfire"> Forest Fire </option>
-											<option value="1"> Others </option>
-										</select>
-										<label for="type">Event Type</label>
-									</div>
-								</div>
-							</div>
-							<!-- other event type -->
-							<div class="col">
-								<div class="form-floating">
-									<input type="text" class="form-control" id="other" name="type" disabled>
-									<label for="floatingInput">Other:</label>
-								</div>
-							</div>
-						</div>
-						<div class="row mb-4">
-							<!-- date -->
-							<div class="col">
-								<div class="form-outline">
-									<div class="form-floating">
-										<input type="date" class="form-control" id="date" name="date">
-										<label for="floatingInput">Date</label>
-									</div>
-								</div>
-							</div>
-							<!-- time -->
-							<div class="col">
-								<div class="form-floating">
-									<input type="time" class="form-control" id="time" name="time">
-									<label for="floatingInput">Time</label>
-								</div>
-							</div>
-						</div>
-						<div class="row mb-4">
-							<!-- lat long -->
-							<div class="col">
-								<input type="text" class="form-control" name="latitude" hidden>
-								<input type="text" class="form-control" name="longitude" hidden>
+				<!-- Button trigger modal -->
+				<div class="d-grid gap-2 col-3 p-5 mx-auto">
+					<button type="button" class="btn btn-report" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+						Report Incident
+					</button>
+					<!-- Button to rain map	 -->
+					<a href="/rainmap" class="leaflet-control btn btn-secondary">View Rain Map</a>
+				</div>
 
-								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="selectLocation()">Select Location from map</button>
+				<!-- Modal -->
+				<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="staticBackdropLabel">Report Incident</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
-							<div class="col">
-								<!-- alert success -->
-								<div class="form-outline mb-4">
-									<div class="alert alert-success d-flex align-items-center" role="alert">
+							<div class="modal-body">
 
-										<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-											<symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
-												<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-											</symbol>
-											<symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
-												<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
-											</symbol>
-										</svg>
-										<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:" id="showCircle">
-
-										</svg>
-										<div id="selectedLocation">
-
+								<!--form-->
+								<form action="addReport" method="POST">
+									@csrf
+									<div class="row mb-4">
+										<!-- event type -->
+										<div class="col">
+											<div class="form-outline">
+												<div class="form-floating">
+													<select class="form-select" id="type" aria-label="type" name="type" onChange="changetextbox();">
+														<option value="" selected disabled>Select</option>
+														<option value="flood"> Flood </option>
+														<option value="landslide"> Landslide </option>
+														<option value="forestfire"> Forest Fire </option>
+														<option value="1"> Others </option>
+													</select>
+													<label for="type">Event Type</label>
+												</div>
+											</div>
+										</div>
+										<!-- other event type -->
+										<div class="col">
+											<div class="form-floating">
+												<input type="text" class="form-control" id="other" name="type" disabled>
+												<label for="floatingInput">Other:</label>
+											</div>
 										</div>
 									</div>
-								</div>
-							</div>
-						</div>
-						<!-- location -->
-						<div class="form-outline mb-4">
-							<div class="form-floating">
-								<input type="text" class="form-control" id="location" name="location">
-								<label for="floatingInput">Location:</label>
-							</div>
-						</div>
-						<!-- remark input -->
-						<div class="form-outline mb-4">
-							<div class="input-group">
-								<span class="input-group-text">Additional information</span>
-								<textarea class="form-control" aria-label="message" name="message"></textarea>
-							</div>
-						</div>
+									<div class="row mb-4">
+										<!-- date -->
+										<div class="col">
+											<div class="form-outline">
+												<div class="form-floating">
+													<input type="date" class="form-control" id="date" name="date">
+													<label for="floatingInput">Date</label>
+												</div>
+											</div>
+										</div>
+										<!-- time -->
+										<div class="col">
+											<div class="form-floating">
+												<input type="time" class="form-control" id="time" name="time">
+												<label for="floatingInput">Time</label>
+											</div>
+										</div>
+									</div>
+									<div class="row mb-4">
+										<!-- lat long -->
+										<div class="col">
+											<input type="text" class="form-control" name="latitude" hidden>
+											<input type="text" class="form-control" name="longitude" hidden>
 
-						<div class="d-grid gap-2 col-6 mx-auto">
-							<!-- Submit button -->
-							<button type="submit" class="btn btn-primary btn-block mb-4">Submit</button>
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="selectLocation()">Select Location from map</button>
+										</div>
+										<div class="col">
+											<!-- alert success -->
+											<div class="form-outline mb-4">
+												<div class="alert alert-success d-flex align-items-center" role="alert">
+
+													<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+														<symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+															<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+														</symbol>
+														<symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+															<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+														</symbol>
+													</svg>
+													<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:" id="showCircle">
+
+													</svg>
+													<div id="selectedLocation">
+
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- location -->
+									<div class="form-outline mb-4">
+										<div class="form-floating">
+											<input type="text" class="form-control" id="location" name="location">
+											<label for="floatingInput">Location:</label>
+										</div>
+									</div>
+									<!-- remark input -->
+									<div class="form-outline mb-4">
+										<div class="input-group">
+											<span class="input-group-text">Additional information</span>
+											<textarea class="form-control" aria-label="message" name="message"></textarea>
+										</div>
+									</div>
+
+									<div class="d-grid gap-2 col-6 mx-auto">
+										<!-- Submit button -->
+										<button type="submit" class="btn btn-report">Submit</button>
+									</div>
+								</form>
+								<!--form-->
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							</div>
 						</div>
-					</form>
-					<!--form-->
+					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				</div>
+
 			</div>
+			@include('layouts.footer')
 		</div>
 	</div>
+	<!-- Background image -->
+
 
 
 
@@ -278,7 +334,7 @@
 
 	var data = <?php echo JSON_encode($report); ?>;
 	var disasterMarker = L.layerGroup([]);
-	
+
 	for (var i = 0; i < data.length; i++) {
 		// Note how "L.marker()" runs only in the browser,
 		// well outside of the <?php ?> tags. PHP doesn't know, nor 
@@ -337,4 +393,3 @@
 		}).addTo(map).openPopup()
 	}
 </script>
-@include('layouts.footer')

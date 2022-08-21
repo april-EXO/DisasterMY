@@ -1,6 +1,6 @@
-<footer class="bg-light text-center text-sm-start">
+<footer class="bg-light text-center text-lg-start">
   <!-- Copyright -->
-  <div class="text-center p-3" style="background-color: #B3E5FC;">
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
     © 2022 Copyright:
     <a class="text-dark" href="https://DisasterMY.com/">DisasterMY.com</a>
   </div>
