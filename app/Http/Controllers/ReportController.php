@@ -27,19 +27,22 @@ class ReportController extends Controller
 		$report->date = $req->date;
 		$report->location = $req->location;
 		$report->message = $req->message;
+		$report->status = $req->status;
 		$report->save();
 		return redirect("/");
 	}
 
-	function viewReport()
+	function viewPendingReport()
 	{
 		$data = Report::all();
-		return view('report', ['report' => $data]);
+		return view('pendingReport', ['pending' => $data]);
 	}
 
-	function approveReport($id)
+	function approvePendingReport($id)
 	{
 		$data = Report::find($id);
+		$data->status = "approved";
+		$data->save();
 
 		$newData = new Event;
 		$newData->type = $data->type;
@@ -47,18 +50,18 @@ class ReportController extends Controller
 		$newData->longitude = $data->longitude;
 		$newData->time = $data->time;
 		$newData->date = $data->date;
+		$newData->location = $data->location;
 		$newData->message = $data->message;
 		$newData->save();
-		$newData->save();
-		$data->delete();
-		return redirect("report");
+		return redirect("/pending");
 	}
 
-	function rejectReport($id)
+	function deletePendingReport($id)
 	{
 		$data = Report::find($id);
-		$data->delete();
-		return redirect("report");
+		$data->status = "rejected";
+		$data->save();
+		return redirect("/pending");
 	}
 
 	function viewEvent()

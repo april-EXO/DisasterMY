@@ -37,3 +37,15 @@
 	// 	},
 	// 	// onEachFeature: onEachFeature
 	// }).addTo(map);
+
+
+	  // function selectLocation() {
+    //     //-------------------------------------------------------------------leaflet events
+    //     map.on('click', function(e) {
+    //         document.querySelector('input[name="latitude"]').value = e.latlng.lat;
+    //         document.querySelector('input[name="longitude"]').value = e.latlng.lng;
+    //         document.getElementById("selectedLocation").innerHTML = "Location Selected";
+    //         document.getElementById("showCircle").innerHTML = "<use xlink:href=\"#check-circle-fill\" />";
+    //         OpenBootstrapPopup();
+    //     })
+    // }
