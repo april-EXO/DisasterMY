@@ -78,6 +78,7 @@
                                     <th scope="col">Type</td>
                                     <th scope="col">Latitude</td>
                                     <th scope="col">Longitude</td>
+                                    <th scope="col">User Location</td>
                                     <th scope="col">Location</td>
                                     <th scope="col">Date</td>
                                     <th scope="col">Time</td>
@@ -90,11 +91,12 @@
                             <tbody>
                                 @foreach ($pending as $key => $data)
                                     <tr>
-                                        <th scope="row">{{ $key +1}}</th>
+                                        <th scope="row">{{ $key + 1 }}</th>
                                         <td>{{ $data->created_at }}</td>
                                         <td>{{ $data->type }}</td>
                                         <td>{{ $data->latitude }}</td>
                                         <td>{{ $data->longitude }}</td>
+                                        <td>{{ $data->locatedlatlng }}</td>
                                         <td>{{ $data->location }}</td>
                                         <td>{{ $data->date }}</td>
                                         <td>{{ $data->time }}</td>
@@ -112,8 +114,9 @@
                                                     class="btn btn-outline-danger btn-rounded" role="button"
                                                     data-mdb-ripple-color="dark">Reject</a>
                                             </td>
-											@else
-											<td></td><td></td>
+                                        @else
+                                            <td></td>
+                                            <td></td>
                                         @endif
                                     </tr>
                                 @endforeach
@@ -125,6 +128,7 @@
                                     <th scope="col">Type</td>
                                     <th scope="col" class="hide_select">Latitude</td>
                                     <th scope="col" class="hide_select">Longitude</td>
+                                    <th scope="col">User Location</td>
                                     <th scope="col">Location</td>
                                     <th scope="col">Date</td>
                                     <th scope="col">Time</td>

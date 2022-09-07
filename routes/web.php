@@ -18,13 +18,13 @@ use App\Http\Controllers\TwiController;
 
 Route::get('/', [ReportController::class, 'getData']);
 
-Route::get('/disasterList', [ExternalController::class, 'getRWData']);
+Route::get('/disasterList', [ReportController::class, 'getDataNR']);
 
 Route::get('/disasterTweets', [TwiController::class, 'tryFilter']);
 
 
 Route::get('/rainmap', function () {
-    return view('rainmap');
+	return view('rainmap');
 });
 
 Route::post('/addReport', [ReportController::class, 'addReport']);
@@ -37,11 +37,11 @@ Route::get('/pending/reject/{id}', [ReportController::class, 'rejectPendingRepor
 Route::get('/loadDataToDB', [ExternalController::class, 'loadDataToDB']);
 
 Route::get('/test000', function () {
-    return view('reversegeo');
+	return view('examples/reversegeo');
 });
 
 Route::get('/test001', function () {
-    return view('locationlatlng');
+	return view('examples/locationlatlng');
 });
 
 Route::get('/test002', [TwiController::class, 'tryFilter']);

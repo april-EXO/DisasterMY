@@ -78,7 +78,6 @@ class ExternalController extends Controller
 
 	function getRWData()
 	{
-		$this->loadDataToDB();
 		$data = RWData::all();
 		return view('news', ['rw' => $data]);
 	}

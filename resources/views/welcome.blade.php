@@ -162,8 +162,8 @@
                                             <input type="text" class="form-control" name="latitude" hidden>
                                             <input type="text" class="form-control" name="longitude" hidden>
                                             <div class="form-floating">
-                                                <input type="text" class="form-control" name="locatedlatlng"
-                                                    disabled>
+                                                <input type="text" class="form-control" name="locatedlatlng" hidden>
+                                                <input type="text" class="form-control" name="located" disabled>
                                                 <label for="floatingInput">Your location is near to:</label>
                                             </div>
 
@@ -201,7 +201,7 @@
                                     <div class="form-outline mb-4">
                                         <div class="form-floating">
                                             <input type="text" class="form-control" id="location"
-                                                name="location">
+                                                name="location" nullable>
                                             <label for="floatingInput">Further describe the location:</label>
                                         </div>
                                     </div>
@@ -209,7 +209,7 @@
                                     <div class="form-outline mb-4">
                                         <div class="input-group">
                                             <span class="input-group-text">Additional information</span>
-                                            <textarea class="form-control" aria-label="message" name="message"></textarea>
+                                            <textarea class="form-control" aria-label="message" name="message" nullable></textarea>
                                         </div>
                                     </div>
 
@@ -242,6 +242,7 @@
 </body>
 
 </html>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
 </script>
@@ -280,7 +281,6 @@
     }
 
 
-
     //-------------------------------------------------------------------real time location
     if (!navigator.geolocation) {
         console.log("Your browser doesn't support GeoLoction")
@@ -300,10 +300,26 @@
         document.querySelector('input[name="latitude"]').value = lat;
         document.querySelector('input[name="longitude"]').value = long;
 
-        var featureGroup = L.featureGroup([userLocationMarker]).bindPopup(
-            "You're here. <br>You may proceed to report an incident in this area.", {
-                autoClose: false
-            }).addTo(map).openPopup();
+        axios.get(
+                'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&featureTypes=&location=' +
+                long + ',' + lat)
+            .then(function(response) {
+                console.log(response);
+                var json = response.data.address.City;
+                var featureGroup = L.featureGroup([userLocationMarker]).bindPopup(
+                    "You are here! <br>You may proceed to report an incident in this area.", {
+                        autoClose: false
+                    }).addTo(map).openPopup();
+                document.querySelector('input[name="locatedlatlng"]').value = json;
+                document.querySelector('input[name="located"]').value = json;
+
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+
+
+
 
     }
 
@@ -328,8 +344,6 @@
 {{-- ... --}}
 <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
 
-<!-- geojson data -->
-<script src="geojson/point.js"></script>
 
 <!-- marker cluster -->
 <script src="dist/leaflet.markercluster.js"></script>
@@ -380,76 +394,116 @@
         fillOpacity: 0.8
     };
 
-
-    // -------------------------------------------------------------------marker clustering
-
-
-    const pointData = L.geoJSON(pointJson, {
-        onEachFeature: function(feature, layer) {
-            const popupContent = "hi"
-            layer.bindPopup(popupContent)
-        },
-        pointToLayer: function(feature, latlng) {
-            return L.circleMarker(latlng, geojsonMarkerOptions);
-        }
+    var floodIcon = L.icon({
+        iconUrl: 'images/pin/floodPin.png',
+        iconSize: [50, 50],
     });
-    const clusterMarker = L.markerClusterGroup().addLayer(pointData);
 
-    map.addLayer(clusterMarker);
+    var landslideIcon = L.icon({
+        iconUrl: 'images/pin/landslidePin.png',
+        iconSize: [50, 50],
+    });
 
-    // -------------------------------------------------------------------marker clustering
-
-
-    var disasterIcon = L.icon({
+    var otherIcon = L.icon({
         iconUrl: 'images/pin/disasterPin.png',
         iconSize: [50, 50],
     });
 
+
+    // -------------------------------------------------------------------marker clustering
+
     var data = <?php echo JSON_encode($report); ?>;
+
     var disasterMarker = L.layerGroup([]);
+    var floodMarker = L.layerGroup([]);
+    var landslideMarker = L.layerGroup([]);
+
+    function titleCase(string) {
+        return string[0].toUpperCase() + string.slice(1).toLowerCase();
+    }
 
     for (var i = 0; i < data.length; i++) {
-        // Note how "L.marker()" runs only in the browser,
-        // well outside of the <?php ?> tags. PHP doesn't know, nor 
-        // it cares, about Leaflet.
-        L.marker([data[i].latitude, data[i].longitude], {
-            icon: disasterIcon
-        }).bindPopup("Disaster: " + data[i].type + "<br>Date: " + data[i].date + "<br>Time: " + data[i].time +
-            "<br><a href=\"/view/" + data[i].id + "\"class=\"btn\">View Details</a>").addTo(disasterMarker);
-
-        // Accessing the properties of the data depends on the structure
-        // of the data. You might want to do stuff like
-        console.log(data);
-        // while remembering to use the developer tools (F12) in your browser.
+        if (data[i].type === 'flood') {
+            L.marker([data[i].latitude, data[i].longitude], {
+                icon: floodIcon
+            }).bindPopup("Disaster: Flood" +
+                "<br>Date: " + data[i].date + "<br>Time: " + data[i].time +
+                "<br>Source: Public Report").addTo(floodMarker);
+        } else if (data[i].type === 'landslide') {
+            L.marker([data[i].latitude, data[i].longitude], {
+                icon: landslideIcon
+            }).bindPopup("Disaster: Landslide" +
+                "<br>Date: " + data[i].date + "<br>Time: " + data[i].time +
+                "<br>Source: Public Report").addTo(landslideMarker);
+        } else {
+            L.marker([data[i].latitude, data[i].longitude], {
+                icon: otherIcon
+            }).bindPopup("Disaster: " + titleCase(data[i].type) +
+                "<br>Date: " + data[i].date + "<br>Time: " + data[i].time +
+                "<br>Source: Public Report").addTo(disasterMarker);
+        }
 
     }
 
-    //-------------------------------------------------------------------test location latlng
+    var data2 = <?php echo JSON_encode($rw); ?>;
 
+    for (var i = 0; i < data2.length; i++) {
+        if (data2[i].event_type === 'Flood') {
+            L.marker([data2[i].latitude, data2[i].longitude], {
+                icon: floodIcon
+            }).bindPopup("Disaster: Flood" +
+                "<br>Date: " + data2[i].event_date + "<br>Location: " + data2[i].event_location +
+                "<br><a href=\"" + data2[i].post_url + "\"class=\"btn\">View Details</a>").addTo(floodMarker);
+        } else if (data2[i].event_type === 'Landslide') {
+            L.marker([data2[i].latitude, data2[i].longitude], {
+                icon: landslideIcon
+            }).bindPopup("Disaster: Landslide" +
+                "<br>Date: " + data2[i].event_date + "<br>Location: " + data2[i].event_location +
+                "<br><a href=\"" + data2[i].post_url + "\"class=\"btn\">View Details</a>").addTo(landslideMarker);
+        } else {
+            L.marker([data2[i].latitude, data2[i].longitude], {
+                icon: otherIcon
+            }).bindPopup("Disaster: " + titleCase(data2[i].event_type) +
+                "<br>Date: " + data2[i].event_date + "<br>Location: " + data2[i].event_location +
+                "<br><a href=\"" + data2[i].post_url + "\"class=\"btn\">View Details</a>").addTo(disasterMarker);
+        }
 
-    var dataRW = <?php echo JSON_encode($rw); ?>;
-    const provider = new window.GeoSearch.OpenStreetMapProvider()
-    for (var j = 0; j < dataRW.length; j++) {
-        var query_addr = dataRW[j].event_location + 'malaysia';
-        // Get the provider, in this case the OpenStreetMap (OSM) provider. For some reason, this is the "wrong" way to instanciate it. Instead, we should be using an import "leaflet-geosearch" but I coulnd't make that work
-		
-        var query_promise = provider.search({
-            query: query_addr
-        });
-
-        query_promise.then(value => {
-            for (k = 0; k < 1; k++) {
-                // Success!
-                var x_coor = value[k].x;
-                var y_coor = value[k].y;
-                var label = value[k].label;
-                L.marker([y_coor, x_coor]).bindPopup("<b>" + dataRW[j].event_location +
-                    "</b><br>" + label).addTo(disasterMarker);
-            };
-        }, reason => {
-            console.log(reason); // Error!
-        });
     }
+
+
+    const clusterMarker = L.markerClusterGroup().addLayer(disasterMarker).addLayer(floodMarker).addLayer(
+        landslideMarker);
+
+
+    map.addLayer(clusterMarker);
+
+
+    //-------------------------------------------------------------------location latlng
+
+
+    // var dataRW = <?php echo JSON_encode($rw); ?>;
+    // const provider = new window.GeoSearch.OpenStreetMapProvider()
+    // for (var j = 0; j < dataRW.length; j++) {
+    //     var query_addr = dataRW[j].event_location + 'malaysia';
+    //     // Get the provider, in this case the OpenStreetMap (OSM) provider. For some reason, this is the "wrong" way to instanciate it. Instead, we should be using an import "leaflet-geosearch" but I coulnd't make that work
+
+    //     var query_promise = provider.search({
+    //         query: query_addr
+    //     });
+
+    //     query_promise.then(value => {
+    //         for (k = 0; k < 1; k++) {
+    //             // Success!
+    //             var x_coor = value[k].x;
+    //             var y_coor = value[k].y;
+    //             var label = value[k].label;
+    //             L.marker([y_coor, x_coor]).bindPopup("<b>" + dataRW[j].event_location +
+    //                 "</b><br>" + label).addTo(disasterMarker);
+    //         };
+    //     }, reason => {
+    //         console.log(reason); // Error!
+    //     });
+    // }
 
     //-------------------------------------------------------------------layers control
     var baseMaps = {
@@ -459,16 +513,13 @@
 
 
     var overlayMaps = {
-        "Flood": disasterMarker,
-        "Land Slide": pointData,
-        "Other": clusterMarker
-
+        "Flood": floodMarker,
+        "Landslide": landslideMarker,
+        "Other": disasterMarker,
+        "Show all": clusterMarker
     };
 
     var layerControl = L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
     }).addTo(map);
-    map.removeLayer(clusterMarker);
-    disasterMarker.addTo(map);
-    // map.removeLayer(disasterMarker);
 </script>

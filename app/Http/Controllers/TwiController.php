@@ -21,13 +21,6 @@ class TwiController extends Controller
 		}
 		$client = new \GuzzleHttp\Client();
 
-		// $response = $client->get("https://api.twitter.com/2/tweets/search/all?query=flood%20baling%20kedah%20-RT&tweet.fields=author_id&media.fields=alt_text,preview_image_url,url", [
-		// 	'headers' => [
-		// 		"Authorization" => "Bearer AAAAAAAAAAAAAAAAAAAAACWMfAEAAAAANsaSCs1UXjl1DwETJWpOKK%2F%2FPWk%3Djcxf71C0A8mur3zW3lyJWza4CHLQ4rOCEQysTJZAB95FuUYaKN",
-		// 		"Cache-Control" => "no-cache",
-		// 		"Accept" => "application/json",
-		// 	]
-		// ]);
 		$response = $client->get("https://api.twitter.com/2/tweets/search/all?query=" . $eventType[0] . "%20" . $eventLocation[0] . "%20-RT&tweet.fields=author_id&media.fields=alt_text,preview_image_url,url&max_results=30", [
 			'headers' => [
 				"Authorization" => "Bearer AAAAAAAAAAAAAAAAAAAAACWMfAEAAAAANsaSCs1UXjl1DwETJWpOKK%2F%2FPWk%3Djcxf71C0A8mur3zW3lyJWza4CHLQ4rOCEQysTJZAB95FuUYaKN",
@@ -66,8 +59,6 @@ class TwiController extends Controller
 				"Accept" => "application/json",
 			]
 		]);
-		// $decodedJson = json_decode($response->getBody(), true);
-		// echo $decodedJson['data'][$b]['author_id'];
 		echo $response->getBody()->getContents();
 	}
 }

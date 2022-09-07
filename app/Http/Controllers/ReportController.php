@@ -14,10 +14,19 @@ class ReportController extends Controller
 {
 	function getData()
 	{
-		$data = Report::all();
+		$data = Report::where('status', 'approved')->get();
 		$RWdata = RWData::all();
 
 		return view('welcome', ['report' => $data])
+		->with('rw', $RWdata);
+	}
+
+	function getDataNR()
+	{
+		$data = Report::where('status', 'approved')->get();
+		$RWdata = RWData::all();
+
+		return view('news', ['report' => $data])
 		->with('rw', $RWdata);
 	}
 
@@ -27,6 +36,7 @@ class ReportController extends Controller
 		$report->type = $req->type;
 		$report->latitude = $req->latitude;
 		$report->longitude = $req->longitude;
+		$report->locatedlatlng = $req->locatedlatlng;
 		$report->time = $req->time;
 		$report->date = $req->date;
 		$report->location = $req->location;
@@ -39,7 +49,7 @@ class ReportController extends Controller
 	function viewPendingReport()
 	{
 		// $data = Report::all();
-		$data = Report::where('status', 'pending')->orWhere('status', 'rejected')->get();
+		$data = Report::where('status', 'pending')->orWhere('status', 'rejected')->orderBy('created_at', 'DESC')->get();
 		// $chapters = Translation::where('chapter', '!=', 0)->get()->groupBy('chapter');
 		return view('pendingReport', ['pending' => $data]);
 	}
@@ -54,6 +64,7 @@ class ReportController extends Controller
 		$newData->type = $data->type;
 		$newData->latitude = $data->latitude;
 		$newData->longitude = $data->longitude;
+		$newData->locatedlatlng = $data->locatedlatlng;
 		$newData->time = $data->time;
 		$newData->date = $data->date;
 		$newData->location = $data->location;

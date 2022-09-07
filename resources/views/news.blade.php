@@ -68,7 +68,9 @@
     <div class="bg-image shadow-2-strong" id="intro">
         <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
             <div class="d-flex justify-content-center align-items-center h-100">
+
                 <div class="card" style="width:80%;">
+
                     <div class="table-wrapper-scroll-y my-custom-scrollbar">
                         <table class="table table-dark table-striped p-3 table-sm" id="example">
                             <thead>
@@ -82,16 +84,31 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php $number = 0; ?>
+                                @foreach ($report as $key => $data2)
+                                    <tr>
+                                        <th scope="row">{{ $number + 1 }}</th>
+                                        <td>{{ $data2->locatedlatlng }}</td>
+                                        <td>{{ ucwords($data2->type) }}</td>
+                                        <td>{{ $data2->date }}, {{ $data2->time }}</td>
+                                        <td>nil</td>
+                                        <td>User Report</td>
+                                    </tr>
+                                    <?php $number++; ?>
+                                @endforeach
                                 @foreach ($rw as $key => $data)
                                     <tr>
-                                        <th scope="row">{{ $key + 1 }}</th>
+                                        <th scope="row">{{ $number + 1 }}</th>
                                         <td>{{ $data->event_location }}</td>
                                         <td>{{ $data->event_type }}</td>
                                         <td>{{ $data->event_date }}</td>
                                         <td><a href="{{ $data->post_url }}">View</a></td>
-                                        <td><a href="{{ $data->source_homepage }}">{{ $data->source_name }}</a> <br>Released On
-                                            {{ $data->post_date }} </td>
+                                        <td><a href="{{ $data->source_homepage }}">{{ $data->source_name }}</a>
+                                            <br>Released On
+                                            {{ $data->post_date }}
+                                        </td>
                                     </tr>
+                                    <?php $number++; ?>
                                 @endforeach
                             </tbody>
                             <tfoot>
@@ -106,6 +123,7 @@
                             </tfoot>
                         </table>
                     </div>
+					
                 </div>
             </div>
         </div>
