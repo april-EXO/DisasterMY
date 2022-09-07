@@ -161,11 +161,12 @@
                                         <div class="col">
                                             <input type="text" class="form-control" name="latitude" hidden>
                                             <input type="text" class="form-control" name="longitude" hidden>
-											<div class="form-floating">
-                                                <input type="text" class="form-control" name="locatedlatlng" disabled>
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" name="locatedlatlng"
+                                                    disabled>
                                                 <label for="floatingInput">Your location is near to:</label>
                                             </div>
-											
+
                                         </div>
                                         <div class="col">
                                             <!-- alert success -->
@@ -187,10 +188,10 @@
                                                     </svg>
                                                     <svg class="bi flex-shrink-0 me-2" width="24" height="24"
                                                         role="img" aria-label="Success: " id="showCircle">
-														<use xlink:href="#check-circle-fill" />
+                                                        <use xlink:href="#check-circle-fill" />
                                                     </svg>
                                                     <div id="selectedLocation">
-														Your location is recorded.
+                                                        Your location is recorded.
                                                     </div>
                                                 </div>
                                             </div>
@@ -214,7 +215,8 @@
 
                                     <div class="d-grid gap-2 col-6 mx-auto">
                                         <!-- Submit button -->
-                                        <button type="submit" class="btn btn-report">Submit</button>
+                                        <button type="submit" class="btn btn-report"
+                                            onclick="success();">Submit</button>
                                     </div>
                                     <input type="hidden" class="form-control" name="status" value="pending">
                                 </form>
@@ -244,6 +246,10 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
 </script>
 <script>
+    function success() {
+        alert("Report submitted! Thank you!");
+    }
+
     function myFunction() {
         console.log("Welcome back!");
     }
@@ -273,7 +279,7 @@
         }
     }
 
-  
+
 
     //-------------------------------------------------------------------real time location
     if (!navigator.geolocation) {
@@ -294,9 +300,10 @@
         document.querySelector('input[name="latitude"]').value = lat;
         document.querySelector('input[name="longitude"]').value = long;
 
-        var featureGroup = L.featureGroup([userLocationMarker]).bindPopup("You're here. <br>You may proceed to report an incident in this area.", {
-            autoClose: false
-        }).addTo(map).openPopup();
+        var featureGroup = L.featureGroup([userLocationMarker]).bindPopup(
+            "You're here. <br>You may proceed to report an incident in this area.", {
+                autoClose: false
+            }).addTo(map).openPopup();
 
     }
 
@@ -317,6 +324,9 @@
     integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
     crossorigin=""></script>
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+{{-- ... --}}
+<script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
 
 <!-- geojson data -->
 <script src="geojson/point.js"></script>
@@ -414,6 +424,33 @@
 
     }
 
+    //-------------------------------------------------------------------test location latlng
+
+
+    var dataRW = <?php echo JSON_encode($rw); ?>;
+    const provider = new window.GeoSearch.OpenStreetMapProvider()
+    for (var j = 0; j < dataRW.length; j++) {
+        var query_addr = dataRW[j].event_location + 'malaysia';
+        // Get the provider, in this case the OpenStreetMap (OSM) provider. For some reason, this is the "wrong" way to instanciate it. Instead, we should be using an import "leaflet-geosearch" but I coulnd't make that work
+		
+        var query_promise = provider.search({
+            query: query_addr
+        });
+
+        query_promise.then(value => {
+            for (k = 0; k < 1; k++) {
+                // Success!
+                var x_coor = value[k].x;
+                var y_coor = value[k].y;
+                var label = value[k].label;
+                L.marker([y_coor, x_coor]).bindPopup("<b>" + dataRW[j].event_location +
+                    "</b><br>" + label).addTo(disasterMarker);
+            };
+        }, reason => {
+            console.log(reason); // Error!
+        });
+    }
+
     //-------------------------------------------------------------------layers control
     var baseMaps = {
         "Dark Mode": Stadia_AlidadeSmoothDark,
@@ -432,5 +469,6 @@
         collapsed: false
     }).addTo(map);
     map.removeLayer(clusterMarker);
+    disasterMarker.addTo(map);
     // map.removeLayer(disasterMarker);
 </script>

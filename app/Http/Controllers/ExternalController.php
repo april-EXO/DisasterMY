@@ -6,20 +6,11 @@ use App\Models\RWData;
 
 class ExternalController extends Controller
 {
-	function getRWData(){
-		$data = RWData::all();
-		return view('news', ['rw' => $data]);
-	}
-	
+
+
 	function loadDataToDB()
 	{
 		RWData::truncate();
-		// $tt = 'Malaysia, Flooding in Batang Padang and Mualim (Perak) and Kuala Selangor (Selangor) (25 May 2022)';
-		// $ex = explode('(', $tt);
-		// $try = substr(end($ex), 0, -1);
-		// echo $try, "<br>";
-
-		//with limit 100
 		$endpoint = "https://api.reliefweb.int/v1/reports?appname=rwint-user-0&profile=list&preset=latest&slim=1&query%5Bvalue%5D=primary_country.id%3A147&query%5Boperator%5D=AND&limit=100";
 		$client = new \GuzzleHttp\Client();
 
@@ -32,7 +23,7 @@ class ExternalController extends Controller
 				$post = new RWData();
 				$post->post_id = $decodedJson['data'][$key2]['id'];
 
-				$post->post_date = $decodedJson['data'][$key2]['id'];
+				$post->post_date = $decodedJson['data'][$key2]['fields']['date']['created'];
 
 
 				$post->source_name = $decodedJson['data'][$key2]['fields']['source'][0]['name'];
@@ -85,62 +76,11 @@ class ExternalController extends Controller
 		}
 	}
 
-	function tryFilter()
+	function getRWData()
 	{
-		$endpoint = "https://api.reliefweb.int/v1/reports?appname=rwint-user-0&profile=list&preset=latest&slim=1&query%5Bvalue%5D=primary_country.id%3A147&query%5Boperator%5D=AND&limit=100";
-		$client = new \GuzzleHttp\Client();
-
-		$response = $client->request('GET', $endpoint);
-		$decodedJson = json_decode($response->getBody(), true);
-
-		foreach ($decodedJson['data'] as $key2 => $k2) {
-			echo $decodedJson['data'][$key2]['id'], "<br>";
-			echo $decodedJson['data'][$key2]['fields']['title'], "<br>";
-			echo $decodedJson['data'][$key2]['fields']['url'], "<br>";
-			foreach ($decodedJson['data'][$key2]['fields']['source'] as $key3 => $k3) {
-				echo $decodedJson['data'][$key2]['fields']['source'][$key3]['name'], "<br>";
-				echo $decodedJson['data'][$key2]['fields']['source'][$key3]['homepage'], "<br>";
-			}
-		}
+		$this->loadDataToDB();
+		$data = RWData::all();
+		return view('news', ['rw' => $data]);
 	}
 
-	function saveData()
-	{
-		RWData::truncate();
-		$endpoint = "https://api.reliefweb.int/v1/reports?appname=rwint-user-0&profile=list&preset=latest&slim=1&query%5Bvalue%5D=primary_country.id%3A147&query%5Boperator%5D=AND&limit=100";
-		$client = new \GuzzleHttp\Client();
-
-		$response = $client->request('GET', $endpoint);
-		$decodedJson = json_decode($response->getBody(), true);
-
-		foreach ($decodedJson['data'] as $key2 => $k) {
-			$post = new RWData();
-			$post->id_ori = $decodedJson['data'][$key2]['id'];
-			$post->post_date = $decodedJson['data'][$key2]['fields']['date']['created'];
-			$post->source_name = $decodedJson['data'][$key2]['fields']['source'][0]['name'];
-			$post->source_homepage = $decodedJson['data'][$key2]['fields']['source'][0]['homepage'];
-			$post->post_title = $decodedJson['data'][$key2]['fields']['title'];
-			$post->post_url = $decodedJson['data'][$key2]['fields']['url'];
-			$post->save();
-			// echo $decodedJson['data'][$key2]['id'], "<br>";
-			// echo $decodedJson['data'][$key2]['fields']['title'], "<br>";
-			// echo $decodedJson['data'][$key2]['fields']['date']['created'], "<br>";
-			// echo $decodedJson['data'][$key2]['fields']['url'], "<br>";
-			// echo $decodedJson['data'][$key2]['fields']['source'][0]['name'], "<br>";
-			// echo $decodedJson['data'][$key2]['fields']['source'][0]['homepage'], "<br>";
-		}
-	}
-
-	function twitterbearer()
-	{
-
-		$endpoint = "https://api.twitter.com/2/tweets/search/all?query=%22flood%22%20place_country%3AMY&tweet.fields=attachments,author_id,created_at,entities,geo,id,source,text,withheld";
-		$client = new \GuzzleHttp\Client();
-
-		$response = $client->request('GET', $endpoint, [
-			'BEARER_TOKEN' => "AAAAAAAAAAAAAAAAAAAAACWMfAEAAAAANsaSCs1UXjl1DwETJWpOKK%2F%2FPWk%3Djcxf71C0A8mur3zW3lyJWza4CHLQ4rOCEQysTJZAB95FuUYaKN"
-		]);
-		$data = json_decode($response->getBody(), true);
-		dd($data);
-	}
 }

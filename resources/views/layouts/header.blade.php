@@ -40,12 +40,12 @@
 						<img src="images/header/list.png" height="15" width="15" alt="Logo" loading="lazy" /> Pending</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#" title="View List of Disaster">
-						<img src="images/header/list.png" height="15" width="15" alt="Logo" loading="lazy" /> Disaster</a>
+					<a class="nav-link" href="/disasterList" title="View List of Disaster">
+						<img src="images/header/news.png" height="15" width="15" alt="Logo" loading="lazy" /> Disaster</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/news" title="View Recent Disaster related News">
-						<img src="images/header/news.png" height="15" width="16" alt="Logo" loading="lazy" /> News</a>
+					<a class="nav-link" href="/disasterTweets" title="View Recent Disaster related Tweets">
+						<img src="images/header/twitter.png" height="15" width="16" alt="Logo" loading="lazy" /> Twitter</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="#"></a>

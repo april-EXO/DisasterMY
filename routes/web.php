@@ -3,6 +3,7 @@
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExternalController;
+use App\Http\Controllers\TwiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,10 @@ use App\Http\Controllers\ExternalController;
 
 Route::get('/', [ReportController::class, 'getData']);
 
-Route::get('/news', [ExternalController::class, 'getRWData']);
+Route::get('/disasterList', [ExternalController::class, 'getRWData']);
+
+Route::get('/disasterTweets', [TwiController::class, 'tryFilter']);
+
 
 Route::get('/rainmap', function () {
     return view('rainmap');
@@ -26,7 +30,7 @@ Route::get('/rainmap', function () {
 Route::post('/addReport', [ReportController::class, 'addReport']);
 Route::get('/pending', [ReportController::class, 'viewPendingReport']);
 Route::get('/pending/approve/{id}', [ReportController::class, 'approvePendingReport']);
-Route::get('/pending/delete/{id}', [ReportController::class, 'deletePendingReport']);
+Route::get('/pending/reject/{id}', [ReportController::class, 'rejectPendingReport']);
 
 
 
@@ -39,3 +43,5 @@ Route::get('/test000', function () {
 Route::get('/test001', function () {
     return view('locationlatlng');
 });
+
+Route::get('/test002', [TwiController::class, 'tryFilter']);

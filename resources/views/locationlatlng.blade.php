@@ -39,7 +39,7 @@
             subdomains: ['a', 'b', 'c']
         }).addTo(map);
 
-        var query_addr = "johor,malaysia";
+        var query_addr = "Baling (Kedah) ,malaysia";
         // Get the provider, in this case the OpenStreetMap (OSM) provider. For some reason, this is the "wrong" way to instanciate it. Instead, we should be using an import "leaflet-geosearch" but I coulnd't make that work
         const provider = new window.GeoSearch.OpenStreetMapProvider()
         var query_promise = provider.search({
@@ -59,7 +59,7 @@
         // }
 
         query_promise.then(value => {
-            for (i = 0; i < value.length; i++) {
+            for (i = 0; i < 1; i++) {
                 // Success!
                 var x_coor = value[i].x;
                 var y_coor = value[i].y;

@@ -89,7 +89,8 @@
                                         <td>{{ $data->event_type }}</td>
                                         <td>{{ $data->event_date }}</td>
                                         <td><a href="{{ $data->post_url }}">View</a></td>
-                                        <td><a href="{{ $data->source_homepage }}">{{ $data->source_name }}</a></td>
+                                        <td><a href="{{ $data->source_homepage }}">{{ $data->source_name }}</a> <br>Released On
+                                            {{ $data->post_date }} </td>
                                     </tr>
                                 @endforeach
                             </tbody>

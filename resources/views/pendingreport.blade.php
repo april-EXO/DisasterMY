@@ -89,19 +89,19 @@
                             </thead>
                             <tbody>
                                 @foreach ($pending as $key => $data)
-                                    @if ($data->status !== 'approved')
-                                        <tr>
-                                            <th scope="row">{{ $key }}</th>
-                                            <td>{{ $data->created_at }}</td>
-                                            <td>{{ $data->type }}</td>
-                                            <td>{{ $data->latitude }}</td>
-                                            <td>{{ $data->longitude }}</td>
-                                            <td>{{ $data->location }}</td>
-                                            <td>{{ $data->date }}</td>
-                                            <td>{{ $data->time }}</td>
-                                            <td>{{ $data->message }}</td>
-                                            <td>{{ $data->status }}</td>
+                                    <tr>
+                                        <th scope="row">{{ $key +1}}</th>
+                                        <td>{{ $data->created_at }}</td>
+                                        <td>{{ $data->type }}</td>
+                                        <td>{{ $data->latitude }}</td>
+                                        <td>{{ $data->longitude }}</td>
+                                        <td>{{ $data->location }}</td>
+                                        <td>{{ $data->date }}</td>
+                                        <td>{{ $data->time }}</td>
+                                        <td>{{ $data->message }}</td>
+                                        <td>{{ $data->status }}</td>
 
+                                        @if ($data->status == 'pending')
                                             <td style="text-align: center"><a
                                                     href="{{ '/pending/approve/' . $data['id'] }}"
                                                     class="btn btn-outline-success btn-rounded" role="button"
@@ -112,8 +112,10 @@
                                                     class="btn btn-outline-danger btn-rounded" role="button"
                                                     data-mdb-ripple-color="dark">Reject</a>
                                             </td>
-                                        </tr>
-                                    @endif
+											@else
+											<td></td><td></td>
+                                        @endif
+                                    </tr>
                                 @endforeach
                             </tbody>
                             <tfoot>

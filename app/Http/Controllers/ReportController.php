@@ -7,14 +7,18 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Report;
 use App\Models\Event;
-
+use App\Http\Controllers\ExternalController;
+use App\Models\RWData;
 
 class ReportController extends Controller
 {
 	function getData()
 	{
 		$data = Report::all();
-		return view('welcome', ['report' => $data]);
+		$RWdata = RWData::all();
+
+		return view('welcome', ['report' => $data])
+		->with('rw', $RWdata);
 	}
 
 	function addReport(Request $req)
@@ -34,7 +38,9 @@ class ReportController extends Controller
 
 	function viewPendingReport()
 	{
-		$data = Report::all();
+		// $data = Report::all();
+		$data = Report::where('status', 'pending')->orWhere('status', 'rejected')->get();
+		// $chapters = Translation::where('chapter', '!=', 0)->get()->groupBy('chapter');
 		return view('pendingReport', ['pending' => $data]);
 	}
 
@@ -56,13 +62,14 @@ class ReportController extends Controller
 		return redirect("/pending");
 	}
 
-	function deletePendingReport($id)
+	function rejectPendingReport($id)
 	{
 		$data = Report::find($id);
 		$data->status = "rejected";
 		$data->save();
 		return redirect("/pending");
 	}
+
 
 	function viewEvent()
 	{
