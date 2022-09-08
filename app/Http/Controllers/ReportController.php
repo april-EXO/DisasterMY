@@ -51,7 +51,7 @@ class ReportController extends Controller
 		// $data = Report::all();
 		$data = Report::where('status', 'pending')->orWhere('status', 'rejected')->orderBy('created_at', 'DESC')->get();
 		// $chapters = Translation::where('chapter', '!=', 0)->get()->groupBy('chapter');
-		return view('pendingReport', ['pending' => $data]);
+		return view('/', ['pending' => $data]);
 	}
 
 	function approvePendingReport($id)

@@ -69,7 +69,10 @@
             color: #fff !important;
         }
     </style>
-    @include('layouts.header')
+ 
+ @include('layouts.header')
+
+ <title>DisasterMY</title>
 
 </head>
 
