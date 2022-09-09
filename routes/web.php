@@ -21,7 +21,7 @@ Route::get('/', [ReportController::class, 'getData']);
 
 Route::get('/disasterList', [ReportController::class, 'getDataNR']);
 
-Route::get('/disasterTweets', [TwiController::class, 'tryFilter']);
+Route::get('/disasterTweets', [TwiController::class, 'getTweets']);
 
 
 Route::get('/rainmap', function () {
@@ -29,7 +29,6 @@ Route::get('/rainmap', function () {
 });
 
 Route::post('/addReport', [ReportController::class, 'addReport']);
-// Route::get('/home', [ReportController::class, 'viewPendingReport']);
 Route::get('/pending/approve/{id}', [ReportController::class, 'approvePendingReport']);
 Route::get('/pending/reject/{id}', [ReportController::class, 'rejectPendingReport']);
 
@@ -45,7 +44,7 @@ Route::get('/test001', function () {
 	return view('examples/locationlatlng');
 });
 
-Route::get('/test002', [TwiController::class, 'tryFilter']);
+// Route::get('/test002', [TwiController::class, 'tryFilter']);
 
 // Auth::routes();
 

@@ -22,10 +22,7 @@ class ExternalController extends Controller
 			if (str_contains($decodedJson['data'][$key2]['fields']['title'], 'Malaysia, Flooding in ') || str_contains($decodedJson['data'][$key2]['fields']['title'], 'Malaysia, Landslide in ') || str_contains($decodedJson['data'][$key2]['fields']['title'], 'Malaysia, Flooding and Landslide in ')) {
 				$post = new RWData();
 				$post->post_id = $decodedJson['data'][$key2]['id'];
-
 				$post->post_date = $decodedJson['data'][$key2]['fields']['date']['created'];
-
-
 				$post->source_name = $decodedJson['data'][$key2]['fields']['source'][0]['name'];
 				$post->source_homepage = $decodedJson['data'][$key2]['fields']['source'][0]['homepage'];
 				$post->post_title = $decodedJson['data'][$key2]['fields']['title'];
@@ -38,39 +35,25 @@ class ExternalController extends Controller
 
 				$post->event_date = $titleDate;
 
-				// echo "Event ID: ", $decodedJson['data'][$key2]['id'], "<br>";
-				// echo "Event Date:", $titleDate, "<br>";
-
 				if (str_contains($decodedJson['data'][$key2]['fields']['title'], 'Malaysia, Flooding in ')) {
 					$repl1flood = str_replace("Malaysia, Flooding in ", "", $titleGet);
 					$repl2flood = str_replace($titleDate, "", $repl1flood);
 					$repl3flood = str_replace("()", "", $repl2flood);
-					// echo "Event Type: Flood <br>";
-					// echo "Location:", $repl3flood, "<br>";
-
 					$post->event_type = "Flood";
 					$post->event_location = $repl3flood;
 				} else if (str_contains($decodedJson['data'][$key2]['fields']['title'], 'Malaysia, Landslide in ')) {
 					$repl1landslide = str_replace("Malaysia, Landslide in ", "", $titleGet);
 					$repl2landslide = str_replace($titleDate, "", $repl1landslide);
 					$repl3landslide = str_replace("()", "", $repl2landslide);
-					// echo "Event Type: Landslide <br>";
-					// echo "Location:", $repl3landslide, "<br>";
-
 					$post->event_type = "Landslide";
 					$post->event_location = $repl3landslide;
 				} else if (str_contains($decodedJson['data'][$key2]['fields']['title'], 'Malaysia, Flooding and Landslide in ')) {
 					$repl1fl = str_replace("Malaysia, Flooding and Landslide in ", "", $titleGet);
 					$repl2fl = str_replace($titleDate, "", $repl1fl);
 					$repl3fl = str_replace("()", "", $repl2fl);
-					// echo "Event Type: Flooding and Landslide <br>";
-					// echo "Location:", $repl3fl, "<br>";
-
 					$post->event_type = "Flooding and Landslide";
 					$post->event_location = $repl3fl;
 				}
-
-				// echo $decodedJson['data'][$key2]['fields']['url'], "<br><br>";
 				$post->save();
 			}
 		}

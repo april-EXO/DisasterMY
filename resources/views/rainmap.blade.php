@@ -106,7 +106,7 @@
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
 <script>
-	var map = L.map('mapid').setView([4.2105, 101.9758], 8);
+	var map = L.map('mapid').setView([4.2105, 101.9758], 7);
 
 	map.zoomControl.setPosition('topright');
 	L.Control.geocoder().addTo(map);

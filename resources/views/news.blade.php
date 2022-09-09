@@ -102,8 +102,8 @@
                                         <td>{{ $data->event_location }}</td>
                                         <td>{{ $data->event_type }}</td>
                                         <td>{{ $data->event_date }}</td>
-                                        <td><a href="{{ $data->post_url }}">View</a></td>
-                                        <td><a href="{{ $data->source_homepage }}">{{ $data->source_name }}</a>
+                                        <td><a href="{{ $data->post_url }}" target="_blank">View</a></td>
+                                        <td><a href="{{ $data->source_homepage }}" target="_blank">{{ $data->source_name }}</a>
                                             <br>Released On
                                             {{ $data->post_date }}
                                         </td>

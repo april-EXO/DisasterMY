@@ -70,7 +70,7 @@ class ReportController extends Controller
 		$newData->location = $data->location;
 		$newData->message = $data->message;
 		$newData->save();
-		return redirect("/pending");
+		return redirect("/home");
 	}
 
 	function rejectPendingReport($id)
@@ -78,7 +78,7 @@ class ReportController extends Controller
 		$data = Report::find($id);
 		$data->status = "rejected";
 		$data->save();
-		return redirect("/pending");
+		return redirect("/home");
 	}
 
 

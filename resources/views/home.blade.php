@@ -23,8 +23,8 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 justify-content-end">
 
                 <li class="nav-item">
-                    <a class="nav-link"
-                        href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                    <a class="nav-link" href="{{ route('logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                 </li>
             </ul>
             <!-- Right links -->
@@ -113,17 +113,17 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Submitted At</td>
+                                    <th scope="col">Status</td>
                                     <th scope="col">Type</td>
-                                    <th scope="col">Latitude</td>
-                                    <th scope="col">Longitude</td>
                                     <th scope="col">User Location</td>
                                     <th scope="col">Location</td>
                                     <th scope="col">Date</td>
                                     <th scope="col">Time</td>
                                     <th scope="col">Message</td>
-                                    <th scope="col">Status</td>
                                     <td></td>
                                     <td></td>
+                                    <th scope="col">Latitude</td>
+                                    <th scope="col">Longitude</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -131,16 +131,14 @@
                                     <tr>
                                         <th scope="row">{{ $key + 1 }}</th>
                                         <td>{{ $data->created_at }}</td>
+
+                                        <td>{{ $data->status }}</td>
                                         <td>{{ $data->type }}</td>
-                                        <td>{{ $data->latitude }}</td>
-                                        <td>{{ $data->longitude }}</td>
                                         <td>{{ $data->locatedlatlng }}</td>
                                         <td>{{ $data->location }}</td>
                                         <td>{{ $data->date }}</td>
                                         <td>{{ $data->time }}</td>
                                         <td>{{ $data->message }}</td>
-                                        <td>{{ $data->status }}</td>
-
                                         @if ($data->status == 'pending')
                                             <td style="text-align: center"><a
                                                     href="{{ '/pending/approve/' . $data['id'] }}"
@@ -156,6 +154,8 @@
                                             <td></td>
                                             <td></td>
                                         @endif
+                                        <td>{{ $data->latitude }}</td>
+                                        <td>{{ $data->longitude }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -163,17 +163,17 @@
                                 <tr>
                                     <th scope="col" class="hide_select">#</th>
                                     <th scope="col">Submitted at</td>
+                                    <th scope="col">Status</td>
                                     <th scope="col">Type</td>
-                                    <th scope="col" class="hide_select">Latitude</td>
-                                    <th scope="col" class="hide_select">Longitude</td>
                                     <th scope="col">User Location</td>
                                     <th scope="col">Location</td>
                                     <th scope="col">Date</td>
-                                    <th scope="col">Time</td>
+                                    <th scope="col" class="hide_select">Time</td>
                                     <th scope="col" class="hide_select">Message</td>
-                                    <th scope="col">Status</td>
                                     <td class="hide_select"></td>
                                     <td class="hide_select"></td>
+                                    <th scope="col" class="hide_select">Latitude</td>
+                                    <th scope="col" class="hide_select">Longitude</td>
                                 </tr>
                             </tfoot>
                         </table>
