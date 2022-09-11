@@ -442,6 +442,7 @@
 
     }
 
+	
     var data2 = <?php echo JSON_encode($rw); ?>;
 
     for (var i = 0; i < data2.length; i++) {

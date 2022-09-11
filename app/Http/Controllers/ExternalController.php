@@ -28,7 +28,6 @@ class ExternalController extends Controller
 				$post->post_title = $decodedJson['data'][$key2]['fields']['title'];
 				$post->post_url = $decodedJson['data'][$key2]['fields']['url'];
 
-
 				$titleGet = $decodedJson['data'][$key2]['fields']['title']; //assign title
 				$titleEx = explode('(', $titleGet);
 				$titleDate = substr(end($titleEx), 0, -1); //get only date from title
