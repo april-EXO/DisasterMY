@@ -1,7 +1,6 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.12.1/datatables.min.css" /> --}}
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
@@ -11,7 +10,6 @@
     <style type="text/css">
         .my-custom-scrollbar {
             position: relative;
-            /* height: 650 px; */
             overflow: auto;
             background-color: rgba(135, 141, 150, 0.5);
         }
@@ -102,10 +100,8 @@
                                         <td>{{ $data->event_location }}</td>
                                         <td>{{ $data->event_type }}</td>
                                         <td>{{ $data->event_date }}</td>
-                                        <td><a href="{{ $data->post_url }}">View</a></td>
-                                        <td><a href="{{ $data->source_homepage }}">{{ $data->source_name }}</a>
-                                            <br>Released On
-                                            {{ $data->post_date }}
+                                        <td><a href="{{ $data->post_url }}" target="_blank">View</a></td>
+                                        <td><a href="{{ $data->source_homepage }}" target="_blank">{{ $data->source_name }}</a>
                                         </td>
                                     </tr>
                                     <?php $number++; ?>
@@ -142,9 +138,6 @@
 
 
 <script>
-    //    $(document).ready(function () {
-    //     $('#example').DataTable();
-    // });
     $(document).ready(function() {
 
         $('#example').DataTable({

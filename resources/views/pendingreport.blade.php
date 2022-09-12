@@ -131,7 +131,7 @@
                                     <th scope="col">User Location</td>
                                     <th scope="col">Location</td>
                                     <th scope="col">Date</td>
-                                    <th scope="col">Time</td>
+                                    <th scope="col" class="hide_select">Time</td>
                                     <th scope="col" class="hide_select">Message</td>
                                     <th scope="col">Status</td>
                                     <td class="hide_select"></td>
@@ -158,9 +158,6 @@
 
 
 <script>
-    //    $(document).ready(function () {
-    //     $('#example').DataTable();
-    // });
     $(document).ready(function() {
 
         $('#example').DataTable({

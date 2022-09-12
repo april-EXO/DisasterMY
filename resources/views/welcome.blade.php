@@ -3,12 +3,6 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <!-- leaflet css -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
         integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
@@ -69,7 +63,10 @@
             color: #fff !important;
         }
     </style>
+
     @include('layouts.header')
+
+    <title>DisasterMY</title>
 
 </head>
 
@@ -117,7 +114,7 @@
                                             <div class="form-outline">
                                                 <div class="form-floating">
                                                     <select class="form-select" id="type" aria-label="type"
-                                                        name="type" onChange="changetextbox();">
+                                                        name="type" onChange="changetextbox();" required>
                                                         <option value="" selected disabled>Select</option>
                                                         <option value="flood"> Flood </option>
                                                         <option value="landslide"> Landslide </option>
@@ -142,7 +139,7 @@
                                             <div class="form-outline">
                                                 <div class="form-floating">
                                                     <input type="date" class="form-control" id="date"
-                                                        name="date">
+                                                        name="date" required>
                                                     <label for="floatingInput">Date</label>
                                                 </div>
                                             </div>
@@ -150,8 +147,8 @@
                                         <!-- time -->
                                         <div class="col">
                                             <div class="form-floating">
-                                                <input type="time" class="form-control" id="time"
-                                                    name="time">
+                                                <input type="time" class="form-control" id="time" name="time"
+                                                    nullable>
                                                 <label for="floatingInput">Time</label>
                                             </div>
                                         </div>
@@ -246,13 +243,21 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     function success() {
-        alert("Report submitted! Thank you!");
+        alert("Submitting report...");
     }
 
-    function myFunction() {
-        console.log("Welcome back!");
+    function changetextbox() {
+        var selectedValue = type.options[type.selectedIndex].value;
+        var txtOther = document.getElementById("other");
+        txtOther.disabled = selectedValue == 1 ? false : true;
+        if (!txtOther.disabled) {
+            txtOther.focus();
+        }
     }
 
     window.onload = function() {
@@ -269,17 +274,6 @@
         sessionStorage.setItem("reloading", "true");
         document.location.reload();
     }
-
-
-    function changetextbox() {
-        var selectedValue = type.options[type.selectedIndex].value;
-        var txtOther = document.getElementById("other");
-        txtOther.disabled = selectedValue == 1 ? false : true;
-        if (!txtOther.disabled) {
-            txtOther.focus();
-        }
-    }
-
 
     //-------------------------------------------------------------------real time location
     if (!navigator.geolocation) {
@@ -317,10 +311,6 @@
             .catch(function(error) {
                 console.log(error);
             });
-
-
-
-
     }
 
     //-------------------------------------------------------------------
@@ -339,6 +329,7 @@
 <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
     integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
     crossorigin=""></script>
+
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
 {{-- ... --}}
@@ -349,27 +340,11 @@
 <script src="dist/leaflet.markercluster.js"></script>
 <script>
     //------------------------------------------------------------------- map initiazliation
-    var map = L.map('map').setView([4.2105, 101.9758], 8);
+    var map = L.map('map').setView([4.2105, 101.9758], 7);
 
     L.control.scale().addTo(map);
 
     map.zoomControl.setPosition('topright');
-
-    //osm
-    var osm = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-    });
-
-    osm.addTo(map);
-
-    //dark
-    var Stadia_AlidadeSmoothDark = L.tileLayer(
-        'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-            maxZoom: 20,
-            attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-        });
-
-    Stadia_AlidadeSmoothDark.addTo(map);
 
     //google hybrid map
     var googleHybrid = L.tileLayer('http://{s}.google.com/vt?lyrs=s,h&x={x}&y={y}&z={z}', {
@@ -379,12 +354,10 @@
 
     googleHybrid.addTo(map);
 
-
     //------------------------------------------------------------------- leaflet search
     L.Control.geocoder().addTo(map);
 
-
-
+    // -------------------------------------------------------------------marker clustering
     const geojsonMarkerOptions = {
         radius: 8,
         fillColor: "blue",
@@ -408,9 +381,6 @@
         iconUrl: 'images/pin/disasterPin.png',
         iconSize: [50, 50],
     });
-
-
-    // -------------------------------------------------------------------marker clustering
 
     var data = <?php echo JSON_encode($report); ?>;
 
@@ -445,6 +415,7 @@
 
     }
 
+
     var data2 = <?php echo JSON_encode($rw); ?>;
 
     for (var i = 0; i < data2.length; i++) {
@@ -474,52 +445,48 @@
     const clusterMarker = L.markerClusterGroup().addLayer(disasterMarker).addLayer(floodMarker).addLayer(
         landslideMarker);
 
+    const clusterFlood = L.markerClusterGroup().addLayer(floodMarker);
+
+    const clusterLandslide = L.markerClusterGroup().addLayer(landslideMarker);
+    const clusterOther = L.markerClusterGroup().addLayer(disasterMarker);
 
     map.addLayer(clusterMarker);
 
 
-    //-------------------------------------------------------------------location latlng
+    // -------------------------------------------------------------------location latlng
 
 
-    // var dataRW = <?php echo JSON_encode($rw); ?>;
-    // const provider = new window.GeoSearch.OpenStreetMapProvider()
-    // for (var j = 0; j < dataRW.length; j++) {
-    //     var query_addr = dataRW[j].event_location + 'malaysia';
-    //     // Get the provider, in this case the OpenStreetMap (OSM) provider. For some reason, this is the "wrong" way to instanciate it. Instead, we should be using an import "leaflet-geosearch" but I coulnd't make that work
+    var dataRW = <?php echo JSON_encode($rw); ?>;
+    const provider = new window.GeoSearch.OpenStreetMapProvider()
+    for (var j = 0; j < dataRW.length; j++) {
+        var query_addr = dataRW[j].event_location + 'malaysia';
 
-    //     var query_promise = provider.search({
-    //         query: query_addr
-    //     });
+        var query_promise = provider.search({
+            query: query_addr
+        });
 
-    //     query_promise.then(value => {
-    //         for (k = 0; k < 1; k++) {
-    //             // Success!
-    //             var x_coor = value[k].x;
-    //             var y_coor = value[k].y;
-    //             var label = value[k].label;
-    //             L.marker([y_coor, x_coor]).bindPopup("<b>" + dataRW[j].event_location +
-    //                 "</b><br>" + label).addTo(disasterMarker);
-    //         };
-    //     }, reason => {
-    //         console.log(reason); // Error!
-    //     });
-    // }
-
-    //-------------------------------------------------------------------layers control
-    var baseMaps = {
-        "Dark Mode": Stadia_AlidadeSmoothDark,
-        "Light Mode": googleHybrid
-    };
-
+        query_promise.then(value => {
+            for (k = 0; k < 1; k++) {
+                // Success!
+                var x_coor = value[k].x;
+                var y_coor = value[k].y;
+                var label = value[k].label;
+                L.marker([y_coor, x_coor]).bindPopup("<b>" + dataRW[j].event_location +
+                    "</b><br>" + label).addTo(disasterMarker);
+            };
+        }, reason => {
+            console.log(reason); // Error!
+        });
+    }
 
     var overlayMaps = {
-        "Flood": floodMarker,
-        "Landslide": landslideMarker,
-        "Other": disasterMarker,
+        "Flood": clusterFlood,
+        "Landslide": clusterLandslide,
+        "Other": clusterOther,
         "Show all": clusterMarker
     };
 
-    var layerControl = L.control.layers(baseMaps, overlayMaps, {
+    var layerControl = L.control.layers(overlayMaps, null, {
         collapsed: false
     }).addTo(map);
 </script>

@@ -48,10 +48,8 @@ class ReportController extends Controller
 
 	function viewPendingReport()
 	{
-		// $data = Report::all();
 		$data = Report::where('status', 'pending')->orWhere('status', 'rejected')->orderBy('created_at', 'DESC')->get();
-		// $chapters = Translation::where('chapter', '!=', 0)->get()->groupBy('chapter');
-		return view('pendingReport', ['pending' => $data]);
+		return view('/', ['pending' => $data]);
 	}
 
 	function approvePendingReport($id)
@@ -70,7 +68,7 @@ class ReportController extends Controller
 		$newData->location = $data->location;
 		$newData->message = $data->message;
 		$newData->save();
-		return redirect("/pending");
+		return redirect("/home");
 	}
 
 	function rejectPendingReport($id)
@@ -78,40 +76,7 @@ class ReportController extends Controller
 		$data = Report::find($id);
 		$data->status = "rejected";
 		$data->save();
-		return redirect("/pending");
+		return redirect("/home");
 	}
 
-
-	function viewEvent()
-	{
-		$data = Event::all();
-		return view('disasterlist', ['approved' => $data]);
-	}
-
-	function viewEditEvent($id)
-	{
-		$data = Event::find($id);
-		return view('edit-approved', ['approved' => $data]);
-	}
-
-	function editEvent(Request $req)
-	{
-		$data = Event::find($req->id);
-
-		$data->event = $req->event;
-		$data->location = $req->location;
-		$data->date = $req->date;
-		$data->time = $req->time;
-		$data->location = $req->location;
-		$data->remark = $req->remark;
-		$data->save();
-		return redirect("edit-approved");
-	}
-
-	function deleteEvent($id)
-	{
-		$data = Event::find($id);
-		$data->delete();
-		return redirect("disasterlist");
-	}
 }

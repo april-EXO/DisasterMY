@@ -21,9 +21,6 @@
 				<li class="nav-item">
 					<a class="nav-link" href="/rainmap" title="View Rain Distribution">Rain Map</a>
 				</li>
-				{{-- <li class="nav-item">
-					<a class="nav-link" href="#" title="View Weather Forecast">Weather</a>
-				</li> --}}
 			</ul>
 			<!-- Left links -->
 		</div>
@@ -35,10 +32,6 @@
 		<div class="d-flex align-items-center">
 			<!-- Right links -->
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0 justify-content-end">
-				<li class="nav-item">
-					<a class="nav-link" href="/pending" title="View List of Pending Report">
-						<img src="images/header/list.png" height="15" width="15" alt="Logo" loading="lazy" /> Pending</a>
-				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="/disasterList" title="View List of Disaster">
 						<img src="images/header/news.png" height="15" width="15" alt="Logo" loading="lazy" /> Disaster</a>
