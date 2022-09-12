@@ -107,7 +107,7 @@
             <div class="d-flex justify-content-center align-items-center h-100">
                 <div class="card" style="width:80%;">
                     <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                        <table class="table table-dark table-striped p-3 table-sm" id="example">
+                        <table class="table table-striped p-3 table-sm" id="example">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -194,12 +194,10 @@
 
 
 <script>
-    //    $(document).ready(function () {
-    //     $('#example').DataTable();
-    // });
     $(document).ready(function() {
 
         $('#example').DataTable({
+            sScrollY: $(window).height()-500,
             initComplete: function() {
                 this.api()
                     .columns()

@@ -21,7 +21,7 @@
         }
 
         .scroll {
-            max-height: 600px;
+            max-height: 300px;
             overflow-y: auto;
         }
     </style>
@@ -34,7 +34,7 @@
             <div class="d-flex justify-content-center align-items-center h-100">
                 <div class="card" style="width:40%; background-color:transparent">
                     <div class="card-header">
-                        <h3 style="color: #fff">Recent Tweets about latest disaster:<br></h3>
+                        <h4 style="color: #fff">Recent Tweets about latest disaster:<br></h4>
                         <h5 style="color:aliceblue">{{ $type }} in {{ $location }} on {{ $date }}
                         </h5>
                     </div>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="card" style="width:40%; background-color:transparent">
                     <div class="card-header">
-                        <h3 style="color: #fff">Recent Tweets from Jabatan Meteorologi Malaysia:<br></h3>
+                        <h4 style="color: #fff">Tweets from Jabatan Meteorologi Malaysia:<br></h4>
                        <h5 style="color: #fff">MET official website: <a
 						href="https://www.met.gov.my/" target="_blank" style="color: rgb(164, 182, 245)">met.gov.my</a></h5>
                     </div>
