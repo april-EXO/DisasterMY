@@ -1,8 +1,5 @@
 <footer class="bg-light text-center text-lg-start">
     <!-- Copyright -->
-    {{-- <div class="p-3" ">
-        <div class="text-center"> </div>
-    </div> --}}
     <div class="p-3" style="background-color: rgba(0, 0, 0, 0.2);">
         <div class="row">
             <div class="col-2"></div>

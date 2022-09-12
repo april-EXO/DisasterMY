@@ -71,8 +71,6 @@
                                                 href="https://twitter.com/metmalaysia?ref_src=twsrc%5Etfw">Tweets by
                                                 metmalaysia</a>
                                     </blockquote>
-
-
                                 </div>
                                 <div class="col-2"></div>
                             </div>

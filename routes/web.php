@@ -32,7 +32,11 @@ Route::post('/addReport', [ReportController::class, 'addReport']);
 Route::get('/pending/approve/{id}', [ReportController::class, 'approvePendingReport']);
 Route::get('/pending/reject/{id}', [ReportController::class, 'rejectPendingReport']);
 
+// Auth::routes();
 
+Auth::routes(['register'=>false, 'reset'=>false,'verify'=>false]);
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/loadDataToDB', [ExternalController::class, 'loadDataToDB']);
 
@@ -43,12 +47,3 @@ Route::get('/test000', function () {
 Route::get('/test001', function () {
 	return view('examples/locationlatlng');
 });
-
-// Route::get('/test002', [TwiController::class, 'tryFilter']);
-
-// Auth::routes();
-
-Auth::routes(['register'=>false, 'reset'=>false,'verify'=>false]);
-
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

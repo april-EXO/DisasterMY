@@ -3,17 +3,10 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <!-- leaflet css -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
         integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
         crossorigin="" />
-
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <!-- marker cluster -->
     <link rel="stylesheet" href="dist/MarkerCluster.css" />
@@ -250,12 +243,15 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     function success() {
         alert("Submitting report...");
     }
 
-	function changetextbox() {
+    function changetextbox() {
         var selectedValue = type.options[type.selectedIndex].value;
         var txtOther = document.getElementById("other");
         txtOther.disabled = selectedValue == 1 ? false : true;
@@ -358,30 +354,10 @@
 
     googleHybrid.addTo(map);
 
-    // //osm
-    // var osm = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    //     attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-    // });
-
-    // osm.addTo(map);
-
-    // //dark
-    // var Stadia_AlidadeSmoothDark = L.tileLayer(
-    //     'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-    //         maxZoom: 20,
-    //         attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-    //     });
-
-    // Stadia_AlidadeSmoothDark.addTo(map);
-
-
-
-
     //------------------------------------------------------------------- leaflet search
     L.Control.geocoder().addTo(map);
 
-
-
+    // -------------------------------------------------------------------marker clustering
     const geojsonMarkerOptions = {
         radius: 8,
         fillColor: "blue",
@@ -405,9 +381,6 @@
         iconUrl: 'images/pin/disasterPin.png',
         iconSize: [50, 50],
     });
-
-
-    // -------------------------------------------------------------------marker clustering
 
     var data = <?php echo JSON_encode($report); ?>;
 
@@ -442,7 +415,7 @@
 
     }
 
-	
+
     var data2 = <?php echo JSON_encode($rw); ?>;
 
     for (var i = 0; i < data2.length; i++) {
@@ -483,35 +456,28 @@
     // -------------------------------------------------------------------location latlng
 
 
-    // var dataRW = <?php echo JSON_encode($rw); ?>;
-    // const provider = new window.GeoSearch.OpenStreetMapProvider()
-    // for (var j = 0; j < dataRW.length; j++) {
-    //     var query_addr = dataRW[j].event_location + 'malaysia';
-        
-    //     var query_promise = provider.search({
-    //         query: query_addr
-    //     });
+    var dataRW = <?php echo JSON_encode($rw); ?>;
+    const provider = new window.GeoSearch.OpenStreetMapProvider()
+    for (var j = 0; j < dataRW.length; j++) {
+        var query_addr = dataRW[j].event_location + 'malaysia';
 
-    //     query_promise.then(value => {
-    //         for (k = 0; k < 1; k++) {
-    //             // Success!
-    //             var x_coor = value[k].x;
-    //             var y_coor = value[k].y;
-    //             var label = value[k].label;
-    //             L.marker([y_coor, x_coor]).bindPopup("<b>" + dataRW[j].event_location +
-    //                 "</b><br>" + label).addTo(disasterMarker);
-    //         };
-    //     }, reason => {
-    //         console.log(reason); // Error!
-    //     });
-    // }
+        var query_promise = provider.search({
+            query: query_addr
+        });
 
-    //-------------------------------------------------------------------layers control
-    // var baseMaps = {
-    //     "Dark Mode": Stadia_AlidadeSmoothDark,
-    //     "Light Mode": googleHybrid
-    // };
-
+        query_promise.then(value => {
+            for (k = 0; k < 1; k++) {
+                // Success!
+                var x_coor = value[k].x;
+                var y_coor = value[k].y;
+                var label = value[k].label;
+                L.marker([y_coor, x_coor]).bindPopup("<b>" + dataRW[j].event_location +
+                    "</b><br>" + label).addTo(disasterMarker);
+            };
+        }, reason => {
+            console.log(reason); // Error!
+        });
+    }
 
     var overlayMaps = {
         "Flood": clusterFlood,

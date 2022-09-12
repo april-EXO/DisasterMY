@@ -41,7 +41,6 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.12.1/datatables.min.css" /> --}}
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
@@ -230,10 +229,6 @@
 </script>
 
 <footer class="bg-light text-center text-lg-start">
-    <!-- Copyright -->
-    {{-- <div class="p-3" ">
-        <div class="text-center"> </div>
-    </div> --}}
     <div class="p-3" style="background-color: rgba(0, 0, 0, 0.2);">
         <div class="row">
             <div class="col-2"></div>
@@ -246,8 +241,6 @@
             {{-- </form> --}}
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 {{ csrf_field() }}</form>
-
         </div>
     </div>
-    <!-- Copyright -->
 </footer>

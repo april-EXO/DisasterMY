@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 08, 2022 at 03:16 AM
+-- Generation Time: Sep 12, 2022 at 07:40 AM
 -- Server version: 5.7.36
 -- PHP Version: 8.1.0
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `approvedreport` (
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -78,14 +78,19 @@ CREATE TABLE IF NOT EXISTS `pendingreport` (
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `pendingreport`
 --
 
 INSERT INTO `pendingreport` (`id`, `type`, `latitude`, `longitude`, `locatedlatlng`, `location`, `date`, `time`, `message`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'flood', '3.04233610000000000000', '101.78657660000000000000', 'Cheras', NULL, '2022-09-07', NULL, NULL, 'pending', '2022-09-07 10:16:23', '2022-09-07 10:16:23');
+(7, 'flood', '3.04233610000000000000', '101.78657660000000000000', 'Cheras', NULL, '2022-09-11', '04:38:00', NULL, 'pending', '2022-09-11 10:36:28', '2022-09-11 10:36:28'),
+(2, 'flood', '3.04233610000000000000', '101.78657660000000000000', 'Cheras', NULL, '2022-09-09', NULL, NULL, 'rejected', '2022-09-08 03:14:20', '2022-09-08 04:12:58'),
+(3, 'flood', '3.04233610000000000000', '101.78657660000000000000', 'Cheras', NULL, '2022-09-07', NULL, NULL, 'rejected', '2022-09-08 03:15:02', '2022-09-08 04:13:53'),
+(4, 'landslide', '5.47024000000000000000', '102.07092000000000000000', 'Dabong', NULL, '2022-09-06', NULL, NULL, 'rejected', '2022-09-08 04:15:01', '2022-09-08 04:15:10'),
+(5, 'landslide', '5.47024000000000000000', '102.07092000000000000000', 'Dabong', NULL, '2022-09-04', NULL, NULL, 'pending', '2022-09-08 04:33:14', '2022-09-08 04:33:14'),
+(6, 'landslide', '3.04233610000000000000', '101.78657660000000000000', 'Cheras', 'Kajang', '2022-09-02', NULL, NULL, 'pending', '2022-09-08 08:15:27', '2022-09-08 08:15:27');
 
 -- --------------------------------------------------------
 
